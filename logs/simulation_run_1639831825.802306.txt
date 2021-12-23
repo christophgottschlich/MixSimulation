@@ -1,0 +1,174 @@
+Step: 0 - IngressProvider: send_message with id: 1 to address: M1
+Step: 0 - IngressProvider: send_message with id: 2 to address: M1
+Step: 0 - IngressProvider: send_message with id: 3 to address: M2
+Step: 0 - IngressProvider: send_message with id: 4 to address: M2
+Step: 0 - IngressProvider: send_message with id: 5 to address: M1
+Step: 0 - IngressProvider: send_message with id: 6 to address: M1
+Step: 0 - IngressProvider: send_message with id: 7 to address: M2
+Step: 0 - IngressProvider: send_message with id: 8 to address: M1
+Step: 0 - IngressProvider: send_message with id: 9 to address: M1
+Step: 0 - IngressProvider: send_message with id: 10 to address: M1
+Step: 0 - IngressProvider: send_message with id: 11 to address: M1
+Step: 0 - IngressProvider: send_message with id: 12 to address: M2
+Step: 0 - IngressProvider: send_message with id: 13 to address: M2
+Step: 0 - IngressProvider: send_message with id: 14 to address: M2
+Step: 0 - IngressProvider: send_message with id: 15 to address: M2
+Step: 0 - IngressProvider: send_message with id: 16 to address: M1
+Step: 0 - IngressProvider: send_message with id: 17 to address: M1
+Step: 0 - IngressProvider: send_message with id: 18 to address: M2
+Step: 0 - IngressProvider: send_message with id: 19 to address: M1
+Step: 0 - IngressProvider: send_message with id: 20 to address: M1
+Step: 0 - IngressProvider: send_message with id: 21 to address: M2
+Step: 0 - IngressProvider: send_message with id: 22 to address: M2
+Step: 0 - IngressProvider: send_message with id: 23 to address: M3
+Step: 0 - IngressProvider: send_message with id: 24 to address: M2
+Step: 0 - IngressProvider: send_message with id: 25 to address: M3
+Step: 0 - PoissonMix M1: Receiving Message with id: 1
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 1. Message arrived after 0MS and is in the specified time window [0, 2127]
+Step: 0 - PoissonMix M1: Receiving Message with id: 2
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 2. Message arrived after 0MS and is in the specified time window [0, 1398]
+Step: 0 - PoissonMix M2: Receiving Message with id: 3
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 3. Message arrived after 0MS and is in the specified time window [0, 3504]
+Step: 0 - PoissonMix M2: Receiving Message with id: 4
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 4. Message arrived after 0MS and is in the specified time window [0, 3018]
+Step: 0 - PoissonMix M1: Receiving Message with id: 5
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 5. Message arrived after 0MS and is in the specified time window [0, 4713]
+Step: 0 - PoissonMix M1: Receiving Message with id: 6
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 6. Message arrived after 0MS and is in the specified time window [0, 4209]
+Step: 0 - PoissonMix M2: Receiving Message with id: 7
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 7. Message arrived after 0MS and is in the specified time window [0, 2613]
+Step: 0 - PoissonMix M1: Receiving Message with id: 8
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 8. Message arrived after 0MS and is in the specified time window [0, 522]
+Step: 0 - PoissonMix M1: Receiving Message with id: 9
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 9. Message arrived after 0MS and is in the specified time window [0, 24]
+Step: 0 - PoissonMix M1: Receiving Message with id: 10
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 10. Message arrived after 0MS and is in the specified time window [0, 60]
+Step: 0 - PoissonMix M1: Receiving Message with id: 11
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 11. Message arrived after 0MS and is in the specified time window [0, 1959]
+Step: 0 - PoissonMix M2: Receiving Message with id: 12
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 12. Message arrived after 0MS and is in the specified time window [0, 4563]
+Step: 0 - PoissonMix M2: Receiving Message with id: 13
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 13. Message arrived after 0MS and is in the specified time window [0, 7617]
+Step: 0 - PoissonMix M2: Receiving Message with id: 14
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 14. Message arrived after 0MS and is in the specified time window [0, 48]
+Step: 0 - PoissonMix M2: Receiving Message with id: 15
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 15. Message arrived after 0MS and is in the specified time window [0, 654]
+Step: 0 - PoissonMix M1: Receiving Message with id: 16
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 16. Message arrived after 0MS and is in the specified time window [0, 1902]
+Step: 0 - PoissonMix M1: Receiving Message with id: 17
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 17. Message arrived after 0MS and is in the specified time window [0, 2442]
+Step: 0 - PoissonMix M2: Receiving Message with id: 18
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 18. Message arrived after 0MS and is in the specified time window [0, 9417]
+Step: 0 - PoissonMix M1: Receiving Message with id: 19
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 19. Message arrived after 0MS and is in the specified time window [0, 2652]
+Step: 0 - PoissonMix M1: Receiving Message with id: 20
+Step: 0 - PoissonMix M1: ACCEPTING Message with id: 20. Message arrived after 0MS and is in the specified time window [0, 1101]
+Step: 0 - PoissonMix M2: Receiving Message with id: 21
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 21. Message arrived after 0MS and is in the specified time window [0, 1524]
+Step: 0 - PoissonMix M2: Receiving Message with id: 22
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 22. Message arrived after 0MS and is in the specified time window [0, 1134]
+Step: 0 - PoissonMix M3: Receiving Message with id: 23
+Step: 0 - PoissonMix M3: ACCEPTING Message with id: 23. Message arrived after 0MS and is in the specified time window [0, 7836]
+Step: 0 - PoissonMix M2: Receiving Message with id: 24
+Step: 0 - PoissonMix M2: ACCEPTING Message with id: 24. Message arrived after 0MS and is in the specified time window [0, 1026]
+Step: 0 - PoissonMix M3: Receiving Message with id: 25
+Step: 0 - PoissonMix M3: ACCEPTING Message with id: 25. Message arrived after 0MS and is in the specified time window [0, 5775]
+Step: 8 - PoissonMix M1: Sending Message with id: 9 to address: M3
+Step: 8 - PoissonMix M3: Receiving Message with id: 9
+Step: 8 - PoissonMix M3: ACCEPTING Message with id: 9. Message arrived after 8MS and is in the specified time window [0, 4871]
+Step: 16 - PoissonMix M2: Sending Message with id: 14 to address: M3
+Step: 16 - PoissonMix M3: Receiving Message with id: 14
+Step: 16 - PoissonMix M3: ACCEPTING Message with id: 14. Message arrived after 16MS and is in the specified time window [0, 10495]
+Step: 21 - PoissonMix M1: Sending Message with id: 10 to address: M3
+Step: 21 - PoissonMix M3: Receiving Message with id: 10
+Step: 21 - PoissonMix M3: ACCEPTING Message with id: 10. Message arrived after 21MS and is in the specified time window [0, 1262]
+Step: 174 - PoissonMix M1: Sending Message with id: 8 to address: M3
+Step: 174 - PoissonMix M3: Receiving Message with id: 8
+Step: 174 - PoissonMix M3: ACCEPTING Message with id: 8. Message arrived after 174MS and is in the specified time window [16, 648]
+Step: 219 - PoissonMix M2: Sending Message with id: 15 to address: M3
+Step: 219 - PoissonMix M3: Receiving Message with id: 15
+Step: 219 - PoissonMix M3: ACCEPTING Message with id: 15. Message arrived after 219MS and is in the specified time window [0, 3515]
+Step: 333 - PoissonMix M3: Sending Message with id: 8 to address: EP
+Step: 333 - ExgressProvider: receive_message with id: 8
+Step: 342 - PoissonMix M2: Sending Message with id: 24 to address: M3
+Step: 342 - PoissonMix M3: Receiving Message with id: 24
+Step: 342 - PoissonMix M3: ACCEPTING Message with id: 24. Message arrived after 342MS and is in the specified time window [0, 5349]
+Step: 436 - PoissonMix M3: Sending Message with id: 10 to address: EP
+Step: 436 - ExgressProvider: receive_message with id: 10
+Step: 466 - PoissonMix M1: Sending Message with id: 2 to address: M3
+Step: 466 - PoissonMix M3: Receiving Message with id: 2
+Step: 466 - PoissonMix M3: ACCEPTING Message with id: 2. Message arrived after 466MS and is in the specified time window [0, 5563]
+Step: 634 - PoissonMix M1: Sending Message with id: 16 to address: M3
+Step: 634 - PoissonMix M3: Receiving Message with id: 16
+Step: 634 - PoissonMix M3: ACCEPTING Message with id: 16. Message arrived after 634MS and is in the specified time window [0, 16498]
+Step: 655 - PoissonMix M1: Sending Message with id: 11 to address: M3
+Step: 655 - PoissonMix M3: Receiving Message with id: 11
+Step: 655 - PoissonMix M3: ACCEPTING Message with id: 11. Message arrived after 655MS and is in the specified time window [261, 1829]
+Step: 709 - PoissonMix M1: Sending Message with id: 1 to address: M3
+Step: 709 - PoissonMix M3: Receiving Message with id: 1
+Step: 709 - PoissonMix M3: ACCEPTING Message with id: 1. Message arrived after 709MS and is in the specified time window [506, 1318]
+Step: 816 - PoissonMix M1: Sending Message with id: 17 to address: M3
+Step: 816 - PoissonMix M3: Receiving Message with id: 17
+Step: 816 - PoissonMix M3: ACCEPTING Message with id: 17. Message arrived after 816MS and is in the specified time window [321, 2293]
+Step: 871 - PoissonMix M2: Sending Message with id: 7 to address: M3
+Step: 871 - PoissonMix M3: Receiving Message with id: 7
+Step: 871 - PoissonMix M3: ACCEPTING Message with id: 7. Message arrived after 871MS and is in the specified time window [506, 1966]
+Step: 913 - PoissonMix M3: Sending Message with id: 1 to address: EP
+Step: 913 - ExgressProvider: receive_message with id: 1
+Step: 1006 - PoissonMix M2: Sending Message with id: 4 to address: M3
+Step: 1006 - PoissonMix M3: Receiving Message with id: 4
+Step: 1006 - PoissonMix M3: ACCEPTING Message with id: 4. Message arrived after 1006MS and is in the specified time window [0, 4240]
+Step: 1048 - PoissonMix M3: Sending Message with id: 11 to address: EP
+Step: 1048 - ExgressProvider: receive_message with id: 11
+Step: 1168 - PoissonMix M2: Sending Message with id: 3 to address: M3
+Step: 1168 - PoissonMix M3: Receiving Message with id: 3
+Step: 1168 - PoissonMix M3: ACCEPTING Message with id: 3. Message arrived after 1168MS and is in the specified time window [718, 2518]
+Step: 1237 - PoissonMix M3: Sending Message with id: 7 to address: EP
+Step: 1237 - ExgressProvider: receive_message with id: 7
+Step: 1312 - PoissonMix M3: Sending Message with id: 17 to address: EP
+Step: 1312 - ExgressProvider: receive_message with id: 17
+Step: 1321 - PoissonMix M3: Sending Message with id: 15 to address: EP
+Step: 1321 - ExgressProvider: receive_message with id: 15
+Step: 1403 - PoissonMix M1: Sending Message with id: 6 to address: M3
+Step: 1403 - PoissonMix M3: Receiving Message with id: 6
+Step: 1403 - PoissonMix M3: ACCEPTING Message with id: 6. Message arrived after 1403MS and is in the specified time window [1198, 2018]
+Step: 1524 - PoissonMix M2: Sending Message with id: 12 to address: M3
+Step: 1524 - PoissonMix M3: Receiving Message with id: 12
+Step: 1524 - PoissonMix M3: ACCEPTING Message with id: 12. Message arrived after 1524MS and is in the specified time window [703, 3975]
+Step: 1573 - PoissonMix M1: Sending Message with id: 5 to address: M3
+Step: 1573 - PoissonMix M3: Receiving Message with id: 5
+Step: 1573 - PoissonMix M3: ACCEPTING Message with id: 5. Message arrived after 1573MS and is in the specified time window [1073, 3065]
+Step: 1609 - PoissonMix M3: Sending Message with id: 6 to address: EP
+Step: 1609 - ExgressProvider: receive_message with id: 6
+Step: 1619 - PoissonMix M3: Sending Message with id: 3 to address: EP
+Step: 1619 - ExgressProvider: receive_message with id: 3
+Step: 1630 - PoissonMix M3: Sending Message with id: 9 to address: EP
+Step: 1630 - ExgressProvider: receive_message with id: 9
+Step: 1925 - PoissonMix M3: Sending Message with id: 25 to address: M2
+Step: 1925 - PoissonMix M2: Receiving Message with id: 25
+Step: 1925 - PoissonMix M2: ACCEPTING Message with id: 25. Message arrived after 1925MS and is in the specified time window [605, 5885]
+Step: 2072 - PoissonMix M3: Sending Message with id: 5 to address: EP
+Step: 2072 - ExgressProvider: receive_message with id: 5
+Step: 2087 - PoissonMix M3: Sending Message with id: 4 to address: EP
+Step: 2087 - ExgressProvider: receive_message with id: 4
+Step: 2167 - PoissonMix M3: Sending Message with id: 2 to address: EP
+Step: 2167 - ExgressProvider: receive_message with id: 2
+Step: 2346 - PoissonMix M3: Sending Message with id: 12 to address: EP
+Step: 2346 - ExgressProvider: receive_message with id: 12
+Step: 2540 - PoissonMix M2: Sending Message with id: 13 to address: M3
+Step: 2540 - PoissonMix M3: Receiving Message with id: 13
+Step: 2540 - PoissonMix M3: ACCEPTING Message with id: 13. Message arrived after 2540MS and is in the specified time window [502, 8650]
+Step: 2612 - PoissonMix M3: Sending Message with id: 23 to address: M1
+Step: 2612 - PoissonMix M1: Receiving Message with id: 23
+Step: 2612 - PoissonMix M1: ACCEPTING Message with id: 23. Message arrived after 2612MS and is in the specified time window [0, 14834]
+Step: 3141 - PoissonMix M2: Sending Message with id: 18 to address: M3
+Step: 3141 - PoissonMix M3: Receiving Message with id: 18
+Step: 3141 - PoissonMix M3: ACCEPTING Message with id: 18. Message arrived after 3141MS and is in the specified time window [2021, 6493]
+Step: 3513 - PoissonMix M3: Sending Message with id: 14 to address: EP
+Step: 3513 - ExgressProvider: receive_message with id: 14
+Step: 4260 - PoissonMix M3: Sending Message with id: 18 to address: EP
+Step: 4260 - ExgressProvider: receive_message with id: 18
+Step: 4578 - PoissonMix M3: Sending Message with id: 13 to address: EP
+Step: 4578 - ExgressProvider: receive_message with id: 13
+Step: 5925 - PoissonMix M3: Sending Message with id: 16 to address: EP
+Step: 5925 - ExgressProvider: receive_message with id: 16
