@@ -281,7 +281,7 @@ def start_standard_simulation_click():
 
 
 # Enter Button =========================================================================================================
-enter_button = Button(root, text="Start Simulation", command = start_simulation_click)
+enter_button = Button(root, text="Start Simulation", command=start_simulation_click)
 enter_button.grid(row=20, column=1)
 
 standard_simulation_button = Button(root, text="Start Standard Simulation", command=start_standard_simulation_click)

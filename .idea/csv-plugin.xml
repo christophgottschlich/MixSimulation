@@ -17,13 +17,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\activities\mix_status_log_log.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\messages\messages_sim.csv">
           <value>
             <Attribute>

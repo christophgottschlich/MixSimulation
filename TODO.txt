@@ -1,0 +1,8 @@
+TODO:
+
+- implement hitting set calculation ( )
+- comparison between hitting set and real sender set (kind of accuracy score or so) ( )
+- adding encryption delay to PoissonMix (requires change in validation method) ( )
+- code linting (according to code guidelines) ( )
+- comment functions in detail ( )
+- delete unnecessary code ( )
