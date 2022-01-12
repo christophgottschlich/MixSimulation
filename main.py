@@ -14,14 +14,14 @@ from tkinter import *
 
 root = Tk()
 
-st_DURATION_SIMULATION = 60000  # 1000000  # Milliseconds
+st_DURATION_SIMULATION = 1000000  # Milliseconds
 st_NBR_USERS = 100
-st_LAYER = [2, 1]  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
-st_PARAM_LAMDA = 15  # arrival rate
-st_PARAM_LAMDA_LOOP_COVER = 5
-st_PARAM_LAMDA_DROP_COVER = 5
-st_PARAM_LAMDA_MIX_COVER = 5
-st_PARAM_MU = 1000  # serving time
+st_LAYER = [2, 3, 1]  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
+st_PARAM_LAMDA = 50  # arrival rate
+st_PARAM_LAMDA_LOOP_COVER = 20
+st_PARAM_LAMDA_DROP_COVER = 20
+st_PARAM_LAMDA_MIX_COVER = 20
+st_PARAM_MU = 50000  # serving time
 st_CRYPTO_DELAY = 500
 st_USER_PROFILE = 5
     
@@ -211,7 +211,8 @@ def start_simulation_click():
                                            duration_simulation,
                                            mix_network,
                                            nbr_users,
-                                           user_profile)
+                                           user_profile,
+                                           crypto_delay)
 
     mix_network.ingress_provider.fill_message_storage(mg.create_messages())
 
@@ -263,7 +264,8 @@ def start_standard_simulation_click():
                                            duration_simulation,
                                            mix_network,
                                            nbr_users,
-                                           user_profile)
+                                           user_profile,
+                                           crypto_delay)
 
     mix_network.ingress_provider.fill_message_storage(mg.create_messages())
     simulation = Simulation.Simulation(env, mix_network)

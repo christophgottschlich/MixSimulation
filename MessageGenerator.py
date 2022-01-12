@@ -5,7 +5,7 @@ import Message
 
 
 class MessageGenerator(object):
-    def __init__(self, param_mu, param_lamda, param_lamda_cover_loop, param_lamda_cover_drop, param_lamda_cover_mix, sim_duration, mix_network, nbr_user, user_profile):
+    def __init__(self, param_mu, param_lamda, param_lamda_cover_loop, param_lamda_cover_drop, param_lamda_cover_mix, sim_duration, mix_network, nbr_user, user_profile, crypto_delay):
         self.param_mu = param_mu
         self.param_lamda = param_lamda
         self.param_lamda_cover_loop = param_lamda_cover_loop
@@ -18,6 +18,7 @@ class MessageGenerator(object):
         self.message_unique_id = 1
         self.user_profile = user_profile
         self.user_profile_array = self.def_user_profiles(nbr_user, user_profile)
+        self.crypto_delay = crypto_delay
 
     def __str__(self):
         return "({0},{1},{2},{3},{4},{5},{6})".format(self.param_mu, self.param_lamda, self.sim_duration, self.param_lamda_cover_loop, self.param_lamda_cover_drop, self.param_lamda_cover_mix, self.nbr_user)
@@ -116,6 +117,11 @@ class MessageGenerator(object):
                 if q > 0:
                     possible_sender.append(q)
 
+            mixes = []
+            for p in range(len(self.mix_network.mixes)):
+                for q in range(len(self.mix_network.mixes[p])):
+                    mixes.append(self.mix_network.mixes[p][q].address)
+
         self.write_message_file(self.message_storage)
         return self.message_storage
 
@@ -134,7 +140,7 @@ class MessageGenerator(object):
         letters = string.ascii_lowercase
         payload = ''.join(random.choice(letters) for i in range(10))
         mu = [self.param_mu] * len(self.mix_network.mixes)
-        m = Message.Message(user_id, recipient, payload, self.message_unique_id, self.get_random_route(), mu, sim_timestamp, cover_bool)
+        m = Message.Message(user_id, recipient, payload, self.message_unique_id, self.get_random_route(), mu, sim_timestamp, cover_bool, self.crypto_delay)
         self.message_unique_id += 1
         self.message_storage.append(m)
 
@@ -144,7 +150,7 @@ class MessageGenerator(object):
         letters = string.ascii_lowercase
         payload = ''.join(random.choice(letters) for i in range(10))
         mu = [self.param_mu] * len(self.mix_network.mixes)
-        m = Message.Message(user_id, recipient, payload, self.message_unique_id, route, mu, sim_timestamp, cover_bool)
+        m = Message.Message(user_id, recipient, payload, self.message_unique_id, route, mu, sim_timestamp, cover_bool, self.crypto_delay)
         self.message_unique_id += 1
         self.message_storage.append(m)
 

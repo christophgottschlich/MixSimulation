@@ -2,7 +2,7 @@ import numpy
 
 
 class Message(object):
-    def __init__(self, real_sender, recipient, payload, message_id, route, para_mu,  ingress_provider_sending_time, cover_traffic):
+    def __init__(self, real_sender, recipient, payload, message_id, route, para_mu,  ingress_provider_sending_time, cover_traffic, crypto_delay):
         self.real_sender = real_sender
         self.recipient = recipient
         self.payload = payload
@@ -14,9 +14,10 @@ class Message(object):
         self.delays = []  # Array with actual delay for mixes in milliseconds -> calculated with para_mu + exponential distribution
         self.timestamp_msg_sent = 0
         self.cover_traffic = cover_traffic
+        self.crypto_delay = crypto_delay
 
         for i in range(len(para_mu)):
-            self.delays.append(int(numpy.random.exponential(para_mu[i], 1).item(0)))
+            self.delays.append(int(numpy.random.exponential(para_mu[i], 1).item(0)) + self.crypto_delay)
 
         tmp = ingress_provider_sending_time
         for i in range(len(self.delays)):
