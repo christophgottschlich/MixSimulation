@@ -7,6 +7,8 @@ class PoissonMix(object):
         self.address = address
         self.message_pool = []
         self.message_mean = [0, 1]
+        self.cover_message_mean = [0, 1]
+        self.empty_pool = [0, 1]
 
     def __str__(self):
         return "({0},{1})".format(self.address, self.message_pool)
@@ -63,8 +65,21 @@ class PoissonMix(object):
     def check_messages(self):
         # method to check if messages should be sent
         # print('PoissonMix ', str(self.address), ': Checking Messages')
+
+        # Mix Messages Analytics
         self.message_mean[0] += len(self.message_pool)
         self.message_mean[1] += 1
+
+        for m in self.message_pool:
+            if m.cover_traffic:
+                self.cover_message_mean[0] += 1
+        self.cover_message_mean[1] += 1
+
+        if self.env.now > 30000:
+            if len(self.message_pool) == 0:
+                self.empty_pool[0] += 1
+            self.empty_pool[1] += 1
+
         messages_to_handle = []
         for m in self.message_pool:
             if len(m.route) == 0 and m.delays[0] == 0:

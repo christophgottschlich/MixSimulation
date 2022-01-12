@@ -10,7 +10,7 @@ class Logger:
         file1.close()
 
         with open("activities/mix_status_log.csv", "w") as file2:
-            file2.write('mix,mean_messages_in_pool' + "\n")
+            file2.write('mix,mean_messages_in_pool,mean_cover_messages_in_pool,empty_pool_mean' + "\n")
         file2.close()
 
     def log(self, txt):
@@ -32,5 +32,7 @@ class Logger:
             for layer in range(len(network.mixes)):
                 for mix in network.mixes[layer]:
                     mean = mix.message_mean[0] / mix.message_mean[1]
-                    file5.write(mix.address + ',' + str(mean) + "\n")
+                    cover_mean = mix.cover_message_mean[0] / mix.cover_message_mean[1]
+                    empty_pool = mix.empty_pool[0] / mix.empty_pool[1]
+                    file5.write(mix.address + ',' + str(mean) + ',' + str(cover_mean) + ',' + str(empty_pool) + "\n")
         file5.close()

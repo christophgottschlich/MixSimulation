@@ -14,14 +14,14 @@ from tkinter import *
 
 root = Tk()
 
-st_DURATION_SIMULATION = 1000000  # Milliseconds
+st_DURATION_SIMULATION = 250000  # Milliseconds
 st_NBR_USERS = 100
-st_LAYER = [2, 3, 1]  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
-st_PARAM_LAMDA = 50  # arrival rate
-st_PARAM_LAMDA_LOOP_COVER = 20
-st_PARAM_LAMDA_DROP_COVER = 20
-st_PARAM_LAMDA_MIX_COVER = 20
-st_PARAM_MU = 50000  # serving time
+st_LAYER = [3, 3, 3]#[2, 3, 1]  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
+st_PARAM_LAMDA = 35#50  # arrival rate
+st_PARAM_LAMDA_LOOP_COVER = 15#20
+st_PARAM_LAMDA_DROP_COVER = 15#20
+st_PARAM_LAMDA_MIX_COVER = 5#20
+st_PARAM_MU = 5000#50000  # serving time
 st_CRYPTO_DELAY = 500
 st_USER_PROFILE = 5
     
@@ -225,6 +225,8 @@ def start_simulation_click():
 
     print(simulation.mix_network.exgress_provider)
     print('Simulation completed')
+
+    SIMLOGGER.mix_status_to_csv(mix_network)
 
     get_analytics(nbr_users)
 

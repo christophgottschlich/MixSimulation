@@ -35,12 +35,15 @@ class Analytics:
                 else:
                     user_drop_cover += 1
 
+        mean_duration_messages = self.analyze_message_duration()
+
         re = 'Message Analytics \n'+'--TOTAL NBR MESSAGES: ' + str(len(message_data)) + '\n' \
             + '--real_messages: ' + str(real_messages) + '\n' \
-                + '--cover_messages: ' + str(cover_messages) + '\n' \
-                    + '--user_loop_cover: ' + str(user_loop_cover) + '\n' \
-                        + '--user_drop_cover: ' + str(user_drop_cover) + '\n' \
-                            + '--mix_loop_cover: ' + str(mix_loop_cover)
+                + '--mean_duration_valid_messages (Seconds): ' + str(mean_duration_messages / 1000) + '\n' \
+                    + '--cover_messages: ' + str(cover_messages) + '\n' \
+                        + '--user_loop_cover: ' + str(user_loop_cover) + '\n' \
+                            + '--user_drop_cover: ' + str(user_drop_cover) + '\n' \
+                                + '--mix_loop_cover: ' + str(mix_loop_cover)
         return re
     
     def analyze_users(self, max_users):
@@ -172,18 +175,53 @@ class Analytics:
                 hs.append(issuer)
         return hs
 
-
     def analyze_mix_status(self):
         # method for analyzing the mean of messages stored in the mix nodes during simulation
         print('Analytics: analyze_mix_status')
         mix_message_data = self.get_mix_status_data()
         ret_separate = mix_message_data
         ret_mean = 0
+        ret_mean_cover = 0
+        ret_mean_empty_pool = 0
         for mix in mix_message_data:
             ret_mean += float(mix['mean_messages_in_pool'])
+            ret_mean_cover += float(mix['mean_cover_messages_in_pool'])
+            ret_mean_empty_pool += float(mix['empty_pool_mean'])
         ret_mean = ret_mean / len(mix_message_data)
+        ret_mean_cover = ret_mean_cover / len(mix_message_data)
+        ret_mean_empty_pool = ret_mean_empty_pool / len(mix_message_data)
 
-        re = 'Action Analytics \n' + '--mean_messages_in_mix: ' + str(ret_mean)
+        re = 'Action Analytics \n' + '--mean_messages_in_mix: ' + str(ret_mean) + '\n' + '--mean_cover_messages_in_mix: ' + str(ret_mean_cover) + '\n' + '--mean_empty_pool_mix (percentage of Simulation-time): ' + str(ret_mean_empty_pool * 100)
 
         return re
 
+    def analyze_message_duration(self):
+        # method that calculates the mean duration that valid messages need till arrival
+        # print('Analytics: analyze_message_duration')
+
+        message_data = self.get_message_data()
+        valid_messages = []
+
+        for m in message_data:
+            if m['cover_bool'] == 'False':
+                valid_messages.append(m)
+
+        action_data = self.get_action_data()
+        ep_receive_actions = []
+
+        for a in action_data:
+            if a['issuer'] == 'EP1' and a['action'] == 'receive':
+                ep_receive_actions.append(a)
+
+        tmp_count = 0
+        tmp_duration = 0
+
+        for m in valid_messages:
+            for a in ep_receive_actions:
+                if m['message_id'] == a['message']:
+                    tmp_count += 1
+                    tmp_duration += int(a['timestamp']) - int(m['ingress_provider_sending_time'])
+
+        ret_mean = tmp_duration / tmp_count
+
+        return ret_mean
