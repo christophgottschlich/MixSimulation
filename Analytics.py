@@ -135,25 +135,43 @@ class Analytics:
         data = self.get_action_data()
         user_log = []
         for i in range(0, len(data)):
-            if int(data[i]['issuer']) == user:
+            if str(data[i]['issuer']) == user:
+                user_log.append(data[i])
+        return user_log
+
+    def get_messages_from_user_at_time(self, user, start_time, end_time):
+        data = self.get_action_data()
+        user_log = []
+        for i in range(0, len(data)):
+            if str(data[i]['issuer']) == user and start_time <= int(data[i]['timestamp']) <= end_time:
                 user_log.append(data[i])
         return user_log
 
     # returns hitting_set of a given message with given time window
-    def get_hitting_set_from_message_path(self, message_id, accepted_time_window):
-        data = self.get_action_data()
+    def get_hitting_set_from_message_path(self, message_id, time_window_start, time_window_end): #betrachte alle Nachrichten, die 20 bis 40ms nach erhalt der Nachricht weitergeschickt wurden => time_window_start = 20, time_window_end = 40
         message_path = self.get_path_of_message(message_id)
         hs = []
 
-        # delete received messages
+        # delete received/accepted entries
         for i in range(0, len(message_path)):
             if message_path[i]['destination'] == 'None':
                 message_path.pop(i)
-        print(message_path)
-        
-        for y in range(0, len(message_path)):
-            time = message_path[y]['timestamp']
-            issuer = message_path[y]['issuer']
+        #print(message_path)
+
+        x = [message_path[0]]
+        while len(x) > 0:
+            time = int(x[0]['timestamp'])
+            issuer = x[0]['issuer']
+            receiver = x[0]['destination']
+            messages_receiver = self.get_messages_from_user_at_time(receiver, time + time_window_start,
+                                                                    time + time_window_end)
+            if len(messages_receiver) > 0:
+                x.append(messages_receiver)
+                x.pop(0)
+            else:
+                hs.append(issuer)
+        return hs
+
 
     def analyze_mix_status(self):
         # method for analyzing the mean of messages stored in the mix nodes during simulation
