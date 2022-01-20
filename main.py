@@ -116,6 +116,26 @@ e_dur_simulation.grid(row=12, column=1)
 label_dur_simulation_stand = Label(root, text=st_DURATION_SIMULATION)
 label_dur_simulation_stand.grid(row=12, column=2)
 
+# Hitting Set Analytics===============================================
+label_space2 = Label(root, text="")
+label_space2.grid(row=200, column=1)
+label_hitting_set_analytics = Label(root, text="Hitting Set Analytics")
+label_hitting_set_analytics.grid(row=201, column=0)
+label_hitting_set_analytics.config(font=("Arial", 22))
+label_number_messages = Label(root, text="Number of Messages") #Calculate HS for this amount of messages
+label_number_messages.grid(row=202, column= 0)
+e_number_messages = Entry(root, width= 25) #Calculate HS for this amount of messages
+e_number_messages.grid(row=202, column=1)
+
+label_window_start = Label(root, text="Time Window Start (in ms)") #Calculate HS for this amount of messages
+label_window_start.grid(row=203, column= 0)
+e_window_start = Entry(root, width= 25) #Calculate HS for this amount of messages
+e_window_start.grid(row=203, column=1)
+
+label_window_end = Label(root, text="Time Window End (in ms)") #Calculate HS for this amount of messages
+label_window_end.grid(row=204, column= 0)
+e_window_end = Entry(root, width= 25) #Calculate HS for this amount of messages
+e_window_end.grid(row=204, column=1)
 
 def simulate(env, simulation):
     while True:
@@ -130,7 +150,7 @@ def get_analytics(max_users):
 
     label_analytics = Label(root, text="Analyse:")
     label_analytics.grid(row=100, column=1)
-    label_analytics.config(font=("Arial", 20))
+    label_analytics.config(font=("Arial", 18))
     label_message_analytics = Label(root, text=message_analytics)
     label_message_analytics.grid(row=101, column=1)
     label_action_analytics = Label(root, text=action_analytics)
@@ -138,14 +158,24 @@ def get_analytics(max_users):
     label_mix_pool_analytics = Label(root, text=mix_pool_analytics)
     label_mix_pool_analytics.grid(row=103, column=1)
 
+    param_mu = st_PARAM_MU
+    if e_mu.get() != "":
+        param_mu = int(e_mu.get())
+
     # dev prints
     print("Nutzer i hat array[i] Nachrichten geschickt")
     print(anal.analyze_users(max_users))
 
-    print(anal.get_path_of_message(1))
 
     print(anal.get_user_profile_data())
     
+def calculateHittingSet_click():
+    anal = Analytics.Analytics("messages/messages_sim.csv", "activities/activity_log.csv",
+                               "activities/mix_status_log.csv", "messages/user_profiles.csv")
+    print("Hittingset: --------------")
+    hittingset = anal.get_hitting_set_from_message_path(1, 1000, 10000)
+    print(hittingset)
+    print("----------------------")
 
 def start_simulation_click():
     duration_simulation = st_DURATION_SIMULATION  # Milliseconds
@@ -192,8 +222,9 @@ def start_simulation_click():
 
     iter_mixes = 1
     mixes = []
-    layer = layer.replace('[', '').replace(']', '').replace(' ', '')
-    layer = layer.split(',')
+    if isinstance(layer, str):
+        layer = layer.replace('[', '').replace(']', '').replace(' ', '')
+        layer = layer.split(',')
     for i in range(len(layer)):
         tmp_layer = []
         for q in range(int(layer[i])):
@@ -215,9 +246,7 @@ def start_simulation_click():
                                            crypto_delay)
 
     mix_network.ingress_provider.fill_message_storage(mg.create_messages())
-
     simulation = Simulation.Simulation(env, mix_network)
-
     env.process(simulation.perform_step())
 
     print('\nSIMULATION **********************************************************************************************')
@@ -225,9 +254,7 @@ def start_simulation_click():
 
     print(simulation.mix_network.exgress_provider)
     print('Simulation completed')
-
     SIMLOGGER.mix_status_to_csv(mix_network)
-
     get_analytics(nbr_users)
 
 
@@ -293,6 +320,10 @@ standard_simulation_button.grid(row=20, column=2)
 
 label_space = Label(root, text="")
 label_space.grid(row=21, column=1)
+
+# Hitting Set Analytics Button
+standard_simulation_button = Button(root, text="Calculate Hitting Set", command=calculateHittingSet_click)
+standard_simulation_button.grid(row=205, column=1)
 
 root.mainloop()
 # ======================================================================================================================

@@ -145,8 +145,9 @@ class Analytics:
     def get_messages_from_user_at_time(self, user, start_time, end_time):
         data = self.get_action_data()
         user_log = []
+        print("Receiver =", user)
         for i in range(0, len(data)):
-            if str(data[i]['issuer']) == user and start_time <= int(data[i]['timestamp']) <= end_time:
+            if str(data[i]['issuer']) == user and start_time <= int(data[i]['timestamp']) <= end_time and str(data[i]['destination']) != "None":
                 user_log.append(data[i])
         return user_log
 
@@ -154,26 +155,43 @@ class Analytics:
     def get_hitting_set_from_message_path(self, message_id, time_window_start, time_window_end): #betrachte alle Nachrichten, die 20 bis 40ms nach erhalt der Nachricht weitergeschickt wurden => time_window_start = 20, time_window_end = 40
         message_path = self.get_path_of_message(message_id)
         hs = []
+        hs.clear()
+        x = []
+        x.clear()
+        for a in message_path:
+            if str(a['destination']) != "None" and int(a['timestamp']) > 0:   #Timestamp > 0 nur damit nicht Nachrichten aus EP weil sonst im nächsten Schritt alle Nachrichten genutzt werden, da EP alle Nachrichten bei 0 losschickt
+                x.append(a)
+                break
+        print("erstes X =")
+        print(x)
+        print("X ende")
 
-        # delete received/accepted entries
-        for i in range(0, len(message_path)):
-            if message_path[i]['destination'] == 'None':
-                message_path.pop(i)
-        #print(message_path)
-
-        x = [message_path[0]]
         while len(x) > 0:
             time = int(x[0]['timestamp'])
-            issuer = x[0]['issuer']
+            curr_message_id = x[0]['message']
             receiver = x[0]['destination']
+            print("Array mit relevanten Nachrichten")
+            print(x[0])
             messages_receiver = self.get_messages_from_user_at_time(receiver, time + time_window_start,
                                                                     time + time_window_end)
+            #print("Message_receiver:....")
+            #print(messages_receiver)
+            #print("....")
             if len(messages_receiver) > 0:
-                x.append(messages_receiver)
-                x.pop(0)
+                x = x + messages_receiver
             else:
-                hs.append(issuer)
-        return hs
+                if receiver == "EP" and curr_message_id not in hs:
+                    hs.append(curr_message_id)
+            x.pop(0)
+        message_in_hittingset = str(message_id) in hs
+        print(str(message_id))
+        print(hs)
+        print(message_in_hittingset)
+        re = 'Hitting-Set Analytics \n' + '--Hitting-Set size: ' + str(len(hs)) + '\n' \
+             + '--Message in Hitting-Set: ' + str(message_in_hittingset)
+        print(hs)
+        return re
+
 
     def analyze_mix_status(self):
         # method for analyzing the mean of messages stored in the mix nodes during simulation
