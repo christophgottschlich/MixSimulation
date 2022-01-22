@@ -1,5 +1,8 @@
 import csv
+import random
+
 import numpy as np
+import statistics
 from numpy import ndarray
 
 from Simulation import SIMLOGGER
@@ -116,7 +119,6 @@ class Analytics:
         # method that returns an array of dictionaries based on the action file
         # print('Analytics: get_action_data')
         action_data = []
-        print(self.actions_file)
         with open(self.actions_file[0], 'r') as file4:
             csv_file = csv.DictReader(file4)
             for row in csv_file:
@@ -145,7 +147,6 @@ class Analytics:
     def get_messages_from_user_at_time(self, user, start_time, end_time):
         data = self.get_action_data()
         user_log = []
-        print("Receiver =", user)
         for i in range(0, len(data)):
             if str(data[i]['issuer']) == user and start_time <= int(data[i]['timestamp']) <= end_time and str(data[i]['destination']) != "None":
                 user_log.append(data[i])
@@ -162,16 +163,11 @@ class Analytics:
             if str(a['destination']) != "None" and int(a['timestamp']) > 0:   #Timestamp > 0 nur damit nicht Nachrichten aus EP weil sonst im nächsten Schritt alle Nachrichten genutzt werden, da EP alle Nachrichten bei 0 losschickt
                 x.append(a)
                 break
-        print("erstes X =")
-        print(x)
-        print("X ende")
 
         while len(x) > 0:
             time = int(x[0]['timestamp'])
             curr_message_id = x[0]['message']
             receiver = x[0]['destination']
-            print("Array mit relevanten Nachrichten")
-            print(x[0])
             messages_receiver = self.get_messages_from_user_at_time(receiver, time + time_window_start,
                                                                     time + time_window_end)
             #print("Message_receiver:....")
@@ -184,12 +180,27 @@ class Analytics:
                     hs.append(curr_message_id)
             x.pop(0)
         message_in_hittingset = str(message_id) in hs
-        print(str(message_id))
-        print(hs)
-        print(message_in_hittingset)
         re = 'Hitting-Set Analytics \n' + '--Hitting-Set size: ' + str(len(hs)) + '\n' \
-             + '--Message in Hitting-Set: ' + str(message_in_hittingset)
-        print(hs)
+             + '--Message in Hitting-Set: ' + str(message_in_hittingset*100) + '%'
+        return message_in_hittingset, len(hs)
+
+
+    def getMultipleHittingSets(self, number_messages, time_window_start, time_window_end):
+        total_bool_in_hs = 0
+        total_size_in_hs = []
+        temp = self.get_message_data()
+        ids = random.sample(temp, number_messages)
+        for i in ids:
+            bool_in_hs, size_hs = self.get_hitting_set_from_message_path(i['message_id'], time_window_start, time_window_end)
+            print("Hittingset calculated for " + str(i['message_id']))
+            if bool_in_hs:
+                total_bool_in_hs += 1
+            total_size_in_hs.append(size_hs)
+
+        average_size_in_hs = statistics.mean(total_size_in_hs)
+        average_bool_in_hs = total_bool_in_hs/number_messages
+        re = 'Hitting-Set Analytics \n' + '--Average Hitting-Set size: ' + str(average_size_in_hs) + '\n' \
+             + '--Message in Hitting-Set on average: ' + str(average_bool_in_hs*100) + '%'
         return re
 
 
@@ -209,7 +220,7 @@ class Analytics:
         ret_mean_cover = ret_mean_cover / len(mix_message_data)
         ret_mean_empty_pool = ret_mean_empty_pool / len(mix_message_data)
 
-        re = 'Action Analytics \n' + '--mean_messages_in_mix: ' + str(ret_mean) + '\n' + '--mean_cover_messages_in_mix: ' + str(ret_mean_cover) + '\n' + '--mean_empty_pool_mix (percentage of Simulation-time): ' + str(ret_mean_empty_pool * 100)
+        re = 'Action Analytics \n' + '--mean_messages_in_mix: ' + str(ret_mean) + '\n' + '--mean_cover_messages_in_mix: ' + str(ret_mean_cover) + '\n' + '--mean_empty_pool_mix (percentage of Simulation-time): ' + str(ret_mean_empty_pool * 100) + '%'
 
         return re
 

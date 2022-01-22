@@ -67,15 +67,15 @@ class PoissonMix(object):
         # print('PoissonMix ', str(self.address), ': Checking Messages')
 
         # Mix Messages Analytics
-        self.message_mean[0] += len(self.message_pool)
-        self.message_mean[1] += 1
+        if self.env.now > 60000:
+            self.message_mean[0] += len(self.message_pool)
+            self.message_mean[1] += 1
 
-        for m in self.message_pool:
-            if m.cover_traffic:
-                self.cover_message_mean[0] += 1
-        self.cover_message_mean[1] += 1
+            for m in self.message_pool:
+                if m.cover_traffic:
+                    self.cover_message_mean[0] += 1
+            self.cover_message_mean[1] += 1
 
-        if self.env.now > 30000:
             if len(self.message_pool) == 0:
                 self.empty_pool[0] += 1
             self.empty_pool[1] += 1

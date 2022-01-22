@@ -172,10 +172,16 @@ def get_analytics(max_users):
 def calculateHittingSet_click():
     anal = Analytics.Analytics("messages/messages_sim.csv", "activities/activity_log.csv",
                                "activities/mix_status_log.csv", "messages/user_profiles.csv")
+    param_hs_start = int(e_window_start.get())
+    param_hs_end = int(e_window_end.get())
+    param_hs_number_msg = int(e_number_messages.get())
     print("Hittingset: --------------")
-    hittingset = anal.get_hitting_set_from_message_path(1, 1000, 10000)
-    print(hittingset)
+    #hittingset = anal.get_hitting_set_from_message_path(param_hs_number_msg, param_hs_start, param_hs_end)
+    hittingsets = anal.getMultipleHittingSets(param_hs_number_msg, param_hs_start, param_hs_end)
     print("----------------------")
+    label_analytics_hittingset = Label(root, text=hittingsets)
+    label_analytics_hittingset.grid(row=210, column=1)
+
 
 def start_simulation_click():
     duration_simulation = st_DURATION_SIMULATION  # Milliseconds
