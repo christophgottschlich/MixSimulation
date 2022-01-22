@@ -179,6 +179,8 @@ def calculateHittingSet_click():
     #hittingset = anal.get_hitting_set_from_message_path(param_hs_number_msg, param_hs_start, param_hs_end)
     hittingsets = anal.getMultipleHittingSets(param_hs_number_msg, param_hs_start, param_hs_end)
     print("----------------------")
+    label_analytics_hittingset = Label(root, text="") #reset to not see any previous values that exceed the current values regarding horizontal space
+    label_analytics_hittingset.grid(row=210, column=1)
     label_analytics_hittingset = Label(root, text=hittingsets)
     label_analytics_hittingset.grid(row=210, column=1)
 

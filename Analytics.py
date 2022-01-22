@@ -174,7 +174,11 @@ class Analytics:
             #print(messages_receiver)
             #print("....")
             if len(messages_receiver) > 0:
-                x = x + messages_receiver
+                for i in messages_receiver:
+                    if i not in x:
+                        x.append(i)
+                #x = x + messages_receiver
+                #x = list(set(x))
             else:
                 if receiver == "EP" and curr_message_id not in hs:
                     hs.append(curr_message_id)
