@@ -38,12 +38,11 @@ class MixNetwork(object):
     def handle_messages(self, messages_to_handle):
         # method that sends messages to the dedicated mix nodes
         # print('MixNetwork: handle_messages')
-        # print(messages_to_handle)
+
         for message in messages_to_handle:
-            if message[1] != 'EP':
+            if message[1] != 'EP':  # if the message should be handed to another mix
                 destination_mix = self.get_mix_by_address(message[1])
                 destination_mix.receive_message(message[0])
-            # elif self.mix_in_last_layer(self.get_mix_by_address(message[1])):
             else:
                 self.exgress_provider.receive_message(message[0])
 
@@ -57,12 +56,13 @@ class MixNetwork(object):
             if len(incoming_messages[0]) > 0:
                 self.handle_messages(incoming_messages)
 
+        # check the whole mix_network if any mixes have to send messages
         messages_to_handle = []
         for layer in range(len(self.mixes)):
             for mix in self.mixes[layer]:
                 inc = mix.check_messages()
                 if len(inc) > 0:
-                    messages_to_handle += inc  # could lead to problems because of empty arrays
+                    messages_to_handle += inc
 
         if len(messages_to_handle) > 0:
             if len(messages_to_handle[0]) > 0:

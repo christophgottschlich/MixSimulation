@@ -5,7 +5,17 @@ import Message
 
 
 class MessageGenerator(object):
-    def __init__(self, param_mu, param_lamda, param_lamda_cover_loop, param_lamda_cover_drop, param_lamda_cover_mix, sim_duration, mix_network, nbr_user, user_profile, crypto_delay):
+    def __init__(self, param_mu,
+                 param_lamda,
+                 param_lamda_cover_loop,
+                 param_lamda_cover_drop,
+                 param_lamda_cover_mix,
+                 sim_duration,
+                 mix_network,
+                 nbr_user,
+                 user_profile,
+                 crypto_delay):
+
         self.param_mu = param_mu
         self.param_lamda = param_lamda
         self.param_lamda_cover_loop = param_lamda_cover_loop
@@ -21,12 +31,19 @@ class MessageGenerator(object):
         self.crypto_delay = crypto_delay
 
     def __str__(self):
-        return "({0},{1},{2},{3},{4},{5},{6})".format(self.param_mu, self.param_lamda, self.sim_duration, self.param_lamda_cover_loop, self.param_lamda_cover_drop, self.param_lamda_cover_mix, self.nbr_user)
+        return "({0},{1},{2},{3},{4},{5},{6})".format(self.param_mu,
+                                                      self.param_lamda,
+                                                      self.sim_duration,
+                                                      self.param_lamda_cover_loop,
+                                                      self.param_lamda_cover_drop,
+                                                      self.param_lamda_cover_mix,
+                                                      self.nbr_user)
 
     def __getitem__(self, key):
         return self
 
-    def def_user_profiles(self, nbr_user, profile):
+    @staticmethod
+    def def_user_profiles(nbr_user, profile):
         # method that creates an array of possible receivers for every user based on the given user_profile
         print('MessageGenerator: def_user_profiles')
         ret = []
@@ -41,12 +58,12 @@ class MessageGenerator(object):
             ret.append(tmp)
         return ret
 
-
     def create_messages(self):
         # method that creates the whole message traffic for the simulation beforehand
         print('MessageGenerator: create_messages')
-        # numpy.random.seed(42)
-        pois_sending_message = numpy.random.poisson(self.param_lamda / 1, int(self.sim_duration / 60000))  # lamda and mu are given for every minute -> sim for milliseconds
+
+        # lamda and mu are given for every minute -> sim for milliseconds
+        pois_sending_message = numpy.random.poisson(self.param_lamda / 1, int(self.sim_duration / 60000))
 
         pois_loop_cover = numpy.random.poisson(self.param_lamda_cover_loop / 1, int(self.sim_duration / 60000))
         pois_drop_cover = numpy.random.poisson(self.param_lamda_cover_drop / 1, int(self.sim_duration / 60000))
@@ -80,7 +97,10 @@ class MessageGenerator(object):
                     sender = sender_ret[0]
                     possible_sender = sender_ret[1]
                     if sender is not None:
-                        self.init_message(i * 60000, 'U' + str(sender), 'U' + str(self.get_random_recipient(sender)), False)
+                        self.init_message(i * 60000,
+                                          'U' + str(sender),
+                                          'U' + str(self.get_random_recipient(sender)),
+                                          False)
 
             # loop cover messages to be sent
             loop_cover_to_send = pois_loop_cover[i]
@@ -108,7 +128,6 @@ class MessageGenerator(object):
                 for q in range(mix_loop_cover_to_send):
                     mix_sender_ret = self.get_random_sender(mixes)
                     mix_sender = mix_sender_ret[0]
-                    possible_mixes = mix_sender_ret[1]
                     if mix_sender is not None:
                         self.init_mix_loop(i * 60000, mix_sender)
 
@@ -140,7 +159,16 @@ class MessageGenerator(object):
         letters = string.ascii_lowercase
         payload = ''.join(random.choice(letters) for i in range(10))
         mu = [self.param_mu] * len(self.mix_network.mixes)
-        m = Message.Message(user_id, recipient, payload, self.message_unique_id, self.get_random_route(), mu, sim_timestamp, cover_bool, self.crypto_delay)
+        m = Message.Message(user_id,
+                            recipient,
+                            payload,
+                            self.message_unique_id,
+                            self.get_random_route(),
+                            mu,
+                            sim_timestamp,
+                            cover_bool,
+                            self.crypto_delay)
+
         self.message_unique_id += 1
         self.message_storage.append(m)
 
@@ -150,7 +178,16 @@ class MessageGenerator(object):
         letters = string.ascii_lowercase
         payload = ''.join(random.choice(letters) for i in range(10))
         mu = [self.param_mu] * len(self.mix_network.mixes)
-        m = Message.Message(user_id, recipient, payload, self.message_unique_id, route, mu, sim_timestamp, cover_bool, self.crypto_delay)
+        m = Message.Message(user_id,
+                            recipient,
+                            payload,
+                            self.message_unique_id,
+                            route,
+                            mu,
+                            sim_timestamp,
+                            cover_bool,
+                            self.crypto_delay)
+
         self.message_unique_id += 1
         self.message_storage.append(m)
 
@@ -192,31 +229,41 @@ class MessageGenerator(object):
         for i in range(len(self.mix_network.mixes)):
             for mix in self.mix_network.mixes[i]:
                 if mix.address == mix_addr:
-                    layer = i # um das layer herauszufinden in dem sich der mix befindet
+                    layer = i
 
-        # falls mix nicht gefunden wird ist layer=none -> muss abgefangen werden, da sonst fehler (aber die nachricht braucht ja eine route) -> evtl einfach dann garkeine anchricht senden
         if layer is not None:
             route = []
             itr = 1
-            while len(route) != nbr_layers:  #solange bis ganze route gebaut wurde
+            while len(route) != nbr_layers:  # end when complete route has been built
                 if (layer + itr) == nbr_layers:
                     itr -= nbr_layers
                 if itr != 0:
-                    route.append(random.choice(self.mix_network.mixes[layer + itr]).address) # fügt immer eine random adresse hinzu von der nächsten schicht
+                    # appends random mix of the next layer
+                    route.append(random.choice(self.mix_network.mixes[layer + itr]).address)
                 else:
-                    route.append(mix_addr) # wenn itr = 0 wird das eigentliche layer des mixes betrachtet (letzter schritt) -> muss adresse des mixes beinhalten
+                    # for mix loop cover the last address has to be the mix
+                    route.append(mix_addr)
 
                 itr += 1
 
             self.init_message_w_route(sim_timestamp, mix_addr, mix_addr, True, route)
 
     def write_message_file(self, messages):
-        # method that wirtes every messages from the simulation run into a separate file
-        print('MessageGenerator: write_message_file')
+        # method that writes every messages from the simulation run into a separate file
+        # print('MessageGenerator: write_message_file')
         f = open("messages/messages_sim.csv", "w")
         f.write('message_id,sender,recipient,payload,ingress_provider_sending_time,route,delays,valid_intervals,cover_bool' + '\n')
+
         for m in messages:
-            f.write(str(m.message_id) + ',' + str(m.real_sender) + ',' + str(m.recipient) + ',' + str(m.payload) + ',' + str(m.ingress_provider_sending_time) + ',' + str(m.route).replace(',', ';') + ',' + str(m.delays).replace(',', ';') + ',' + str(m.valid_intervals).replace(',', ';') + ',' + str(m.cover_traffic) + '\n')
+            f.write(str(m.message_id) + ','
+                    + str(m.real_sender) + ','
+                    + str(m.recipient) + ','
+                    + str(m.payload) + ','
+                    + str(m.ingress_provider_sending_time)
+                    + ',' + str(m.route).replace(',', ';') + ','
+                    + str(m.delays).replace(',', ';') + ','
+                    + str(m.valid_intervals).replace(',', ';')
+                    + ',' + str(m.cover_traffic) + '\n')
         f.close()
 
         f2 = open("messages/user_profiles.csv", "w")
@@ -225,13 +272,3 @@ class MessageGenerator(object):
         for i in range(len(self.user_profile_array)):
             f2.write(str(i + 1) + ',' + str(self.user_profile_array[i]).replace(',', ';') + '\n')
         f2.close()
-
-
-
-
-
-
-
-
-
-

@@ -13,6 +13,7 @@ class ExgressProvider(object):
     def receive_message(self, message):
         # method to handle the reception of messages coming out of the MixNetwork
         print('ExgressProvider: receive_message message_id: ', message.message_id)
-        SIMLOGGER.log('Step: ' + str(self.env.now) + ' - ExgressProvider: receive_message with id: ' + str(message.message_id))
+        SIMLOGGER.log('Step: ' + str(self.env.now)
+                      + ' - ExgressProvider: receive_message with id: ' + str(message.message_id))
         SIMLOGGER.action_to_csv(str(self.env.now), self.address, 'receive', str(message.message_id), 'None')
         self.message_storage.append(message)

@@ -13,7 +13,9 @@ class IngressProvider(object):
     def send_message(self, message):
         # method that sends the messages to the mix network at certain times
         print('IngressProvider: send_message message_id: ', message.message_id)
-        SIMLOGGER.log('Step: ' + str(self.env.now) + ' - IngressProvider: send_message with id: ' + str(message.message_id) + ' to address: ' + message.route[0])
+        SIMLOGGER.log('Step: ' + str(self.env.now)
+                      + ' - IngressProvider: send_message with id: '
+                      + str(message.message_id) + ' to address: ' + message.route[0])
         SIMLOGGER.action_to_csv(str(self.env.now), self.address, 'send', str(message.message_id), message.route[0])
         message.timestamp_msg_sent = self.env.now - 1  # needed to calculate time-window for accepting the message
         receiver = message.route[0]

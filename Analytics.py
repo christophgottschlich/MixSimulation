@@ -1,11 +1,7 @@
 import csv
 import random
-
 import numpy as np
 import statistics
-from numpy import ndarray
-
-from Simulation import SIMLOGGER
 
 
 class Analytics:
@@ -25,6 +21,8 @@ class Analytics:
         user_loop_cover = 0
         user_drop_cover = 0
         mix_loop_cover = 0
+        
+        # count the message types
         for m in message_data:
             if m['cover_bool'] == 'False':
                 real_messages += 1
@@ -40,13 +38,14 @@ class Analytics:
 
         mean_duration_messages = self.analyze_message_duration()
 
+        # return for frontend display
         re = 'Message Analytics \n'+'--TOTAL NBR MESSAGES: ' + str(len(message_data)) + '\n' \
             + '--real_messages: ' + str(real_messages) + '\n' \
-                + '--mean_duration_valid_messages (Seconds): ' + str(mean_duration_messages / 1000) + '\n' \
-                    + '--cover_messages: ' + str(cover_messages) + '\n' \
-                        + '--user_loop_cover: ' + str(user_loop_cover) + '\n' \
-                            + '--user_drop_cover: ' + str(user_drop_cover) + '\n' \
-                                + '--mix_loop_cover: ' + str(mix_loop_cover)
+            + '--mean_duration_valid_messages (Seconds): ' + str(mean_duration_messages / 1000) + '\n' \
+            + '--cover_messages: ' + str(cover_messages) + '\n' \
+            + '--user_loop_cover: ' + str(user_loop_cover) + '\n' \
+            + '--user_drop_cover: ' + str(user_drop_cover) + '\n' \
+            + '--mix_loop_cover: ' + str(mix_loop_cover)
         return re
     
     def analyze_users(self, max_users):
@@ -54,7 +53,7 @@ class Analytics:
         sender_message_count = np.zeros((max_users+1,), dtype=int)
         for m in message_data:
             if m['sender'].startswith('U'):
-                sender = int(m['sender'][1 : : ])
+                sender = int(m['sender'][1::])
                 sender_message_count[sender] += 1
         return sender_message_count
 
@@ -75,7 +74,7 @@ class Analytics:
         if accepting != 0:
             re = 'Action Analytics \n' + '--accepting_actions: ' + str(accepting) + '\n' \
                 + '--rejecting_actions: ' + str(rejecting) + '\n' \
-                    + '--rej/acc: ' + str(rejecting / accepting)
+                + '--rej/acc: ' + str(rejecting / accepting)
         
         return re
 
@@ -148,19 +147,21 @@ class Analytics:
         data = self.get_action_data()
         user_log = []
         for i in range(0, len(data)):
-            if str(data[i]['issuer']) == user and start_time <= int(data[i]['timestamp']) <= end_time and str(data[i]['destination']) != "None":
+            if str(data[i]['issuer']) == user and \
+                    start_time <= int(data[i]['timestamp']) <= end_time and \
+                    str(data[i]['destination']) != "None":
                 user_log.append(data[i])
         return user_log
 
     # returns hitting_set of a given message with given time window
-    def get_hitting_set_from_message_path(self, message_id, time_window_start, time_window_end): #betrachte alle Nachrichten, die 20 bis 40ms nach erhalt der Nachricht weitergeschickt wurden => time_window_start = 20, time_window_end = 40
+    def get_hitting_set_from_message_path(self, message_id, time_window_start, time_window_end):
         message_path = self.get_path_of_message(message_id)
         hs = []
         hs.clear()
         x = []
         x.clear()
         for a in message_path:
-            if str(a['destination']) != "None" and int(a['timestamp']) > 0:   #Timestamp > 0 nur damit nicht Nachrichten aus EP weil sonst im nächsten Schritt alle Nachrichten genutzt werden, da EP alle Nachrichten bei 0 losschickt
+            if str(a['destination']) != "None" and int(a['timestamp']) > 0:  
                 x.append(a)
                 break
 
@@ -168,17 +169,15 @@ class Analytics:
             time = int(x[0]['timestamp'])
             curr_message_id = x[0]['message']
             receiver = x[0]['destination']
-            messages_receiver = self.get_messages_from_user_at_time(receiver, time + time_window_start,
+            messages_receiver = self.get_messages_from_user_at_time(receiver,
+                                                                    time + time_window_start,
                                                                     time + time_window_end)
-            #print("Message_receiver:....")
-            #print(messages_receiver)
-            #print("....")
+            
             if len(messages_receiver) > 0:
                 for i in messages_receiver:
                     if i not in x:
                         x.append(i)
-                #x = x + messages_receiver
-                #x = list(set(x))
+                
             else:
                 if receiver == "EP" and curr_message_id not in hs:
                     hs.append(curr_message_id)
@@ -188,14 +187,15 @@ class Analytics:
              + '--Message in Hitting-Set: ' + str(message_in_hittingset*100) + '%'
         return message_in_hittingset, len(hs)
 
-
-    def getMultipleHittingSets(self, number_messages, time_window_start, time_window_end):
+    def get_multiple_hitting_sets(self, number_messages, time_window_start, time_window_end):
         total_bool_in_hs = 0
         total_size_in_hs = []
         temp = self.get_message_data()
         ids = random.sample(temp, number_messages)
         for i in ids:
-            bool_in_hs, size_hs = self.get_hitting_set_from_message_path(i['message_id'], time_window_start, time_window_end)
+            bool_in_hs, size_hs = self.get_hitting_set_from_message_path(i['message_id'],
+                                                                         time_window_start,
+                                                                         time_window_end)
             print("Hittingset calculated for " + str(i['message_id']))
             if bool_in_hs:
                 total_bool_in_hs += 1
@@ -207,25 +207,33 @@ class Analytics:
              + '--Message in Hitting-Set on average: ' + str(average_bool_in_hs*100) + '%'
         return re
 
-
     def analyze_mix_status(self):
         # method for analyzing the mean of messages stored in the mix nodes during simulation
         print('Analytics: analyze_mix_status')
         mix_message_data = self.get_mix_status_data()
-        ret_separate = mix_message_data
+
         ret_mean = 0
+        ret_mean_pool_not_empty = 0
         ret_mean_cover = 0
         ret_mean_empty_pool = 0
+
+        # calculate the mean of the mix_status_log values over all mixes
         for mix in mix_message_data:
             ret_mean += float(mix['mean_messages_in_pool'])
+            ret_mean_pool_not_empty += float(mix['mean_pool_not_empty'])
             ret_mean_cover += float(mix['mean_cover_messages_in_pool'])
             ret_mean_empty_pool += float(mix['empty_pool_mean'])
+
         ret_mean = ret_mean / len(mix_message_data)
+        ret_mean_pool_not_empty = ret_mean_pool_not_empty / len(mix_message_data)
         ret_mean_cover = ret_mean_cover / len(mix_message_data)
         ret_mean_empty_pool = ret_mean_empty_pool / len(mix_message_data)
 
-        re = 'Action Analytics \n' + '--mean_messages_in_mix: ' + str(ret_mean) + '\n' + '--mean_cover_messages_in_mix: ' + str(ret_mean_cover) + '\n' + '--mean_empty_pool_mix (percentage of Simulation-time): ' + str(ret_mean_empty_pool * 100) + '%'
-
+        re = 'Action Analytics \n' + \
+             '--mean_messages_in_mix: ' + str(ret_mean) + '\n' + \
+             '--mean_messages_in_mix_when_pool_not_empty: ' + str(ret_mean_pool_not_empty) + '\n' + \
+             '--mean_cover_messages_in_mix: ' + str(ret_mean_cover) + '\n' +\
+             '--mean_empty_pool_mix (percentage of Simulation-time): ' + str(ret_mean_empty_pool * 100) + '%'
         return re
 
     def analyze_message_duration(self):
@@ -235,6 +243,7 @@ class Analytics:
         message_data = self.get_message_data()
         valid_messages = []
 
+        # check only valid messages
         for m in message_data:
             if m['cover_bool'] == 'False':
                 valid_messages.append(m)
@@ -256,5 +265,4 @@ class Analytics:
                     tmp_duration += int(a['timestamp']) - int(m['ingress_provider_sending_time'])
 
         ret_mean = tmp_duration / tmp_count
-
         return ret_mean

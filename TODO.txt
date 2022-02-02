@@ -1,11 +1,11 @@
 TODO:
 
-- implement hitting set calculation ( )
-- comparison between hitting set and real sender set (kind of accuracy score or so) ( )
+- implement hitting set calculation (X)
+- comparison between hitting set and real sender set (kind of accuracy score or so) (X)
 - adding encryption delay to PoissonMix (requires change in validation method) (X)
-- code linting (according to code guidelines) ( )
-- comment functions in detail ( )
-- delete unnecessary code ( )
+- code linting (according to code guidelines) (X)
+- comment functions in detail (X)
+- delete unnecessary code (X)
 - mix_loop_cover bug fixed (X)
 - mean cover messages in pool (X)
 - mean seconds with empty message_pool (X)

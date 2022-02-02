@@ -16,18 +16,18 @@ root = Tk()
 
 st_DURATION_SIMULATION = 250000  # Milliseconds
 st_NBR_USERS = 100
-st_LAYER = [3, 3, 3]#[2, 3, 1]  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
-st_PARAM_LAMDA = 35#50  # arrival rate
-st_PARAM_LAMDA_LOOP_COVER = 15#20
-st_PARAM_LAMDA_DROP_COVER = 15#20
-st_PARAM_LAMDA_MIX_COVER = 5#20
-st_PARAM_MU = 5000#50000  # serving time
+st_LAYER = [3, 3, 3]
+st_PARAM_LAMDA = 35
+st_PARAM_LAMDA_LOOP_COVER = 15
+st_PARAM_LAMDA_DROP_COVER = 15
+st_PARAM_LAMDA_MIX_COVER = 5
+st_PARAM_MU = 5000
 st_CRYPTO_DELAY = 500
 st_USER_PROFILE = 5
     
 # HEADER =======================================================================
 label_titel = Label(root, text="Stop and Go Mix - Simulator")
-label_titel.grid(row = 0, column=1)
+label_titel.grid(row=0, column=1)
 label_titel.config(font=("Arial", 25))
 label_free_row = Label(root, text="  ")
 label_free_row.grid(row=1, column=0)
@@ -122,28 +122,33 @@ label_space2.grid(row=200, column=1)
 label_hitting_set_analytics = Label(root, text="Hitting Set Analytics")
 label_hitting_set_analytics.grid(row=201, column=0)
 label_hitting_set_analytics.config(font=("Arial", 22))
-label_number_messages = Label(root, text="Number of Messages") #Calculate HS for this amount of messages
-label_number_messages.grid(row=202, column= 0)
-e_number_messages = Entry(root, width= 25) #Calculate HS for this amount of messages
+label_number_messages = Label(root, text="Number of Messages")  # Calculate HS for this amount of messages
+label_number_messages.grid(row=202, column=0)
+e_number_messages = Entry(root, width=25)  # Calculate HS for this amount of messages
 e_number_messages.grid(row=202, column=1)
 
-label_window_start = Label(root, text="Time Window Start (in ms)") #Calculate HS for this amount of messages
-label_window_start.grid(row=203, column= 0)
-e_window_start = Entry(root, width= 25) #Calculate HS for this amount of messages
+label_window_start = Label(root, text="Time Window Start (in ms)")  # Calculate HS for this amount of messages
+label_window_start.grid(row=203, column=0)
+e_window_start = Entry(root, width=25)  # Calculate HS for this amount of messages
 e_window_start.grid(row=203, column=1)
 
-label_window_end = Label(root, text="Time Window End (in ms)") #Calculate HS for this amount of messages
-label_window_end.grid(row=204, column= 0)
-e_window_end = Entry(root, width= 25) #Calculate HS for this amount of messages
+label_window_end = Label(root, text="Time Window End (in ms)")  # Calculate HS for this amount of messages
+label_window_end.grid(row=204, column=0)
+e_window_end = Entry(root, width=25)  # Calculate HS for this amount of messages
 e_window_end.grid(row=204, column=1)
 
-def simulate(env, simulation):
+
+def simulate(simulation):
     while True:
         simulation.perform_step()
 
 
-def get_analytics(max_users):
-    anal = Analytics.Analytics("messages/messages_sim.csv", "activities/activity_log.csv", "activities/mix_status_log.csv", "messages/user_profiles.csv")
+def get_analytics():
+    anal = Analytics.Analytics("messages/messages_sim.csv", 
+                               "activities/activity_log.csv", 
+                               "activities/mix_status_log.csv", 
+                               "messages/user_profiles.csv")
+    
     message_analytics = anal.analyze_messages()
     action_analytics = anal.analyze_actions()
     mix_pool_analytics = anal.analyze_mix_status()
@@ -158,28 +163,25 @@ def get_analytics(max_users):
     label_mix_pool_analytics = Label(root, text=mix_pool_analytics)
     label_mix_pool_analytics.grid(row=103, column=1)
 
-    param_mu = st_PARAM_MU
-    if e_mu.get() != "":
-        param_mu = int(e_mu.get())
-
-    # dev prints
-    print("Nutzer i hat array[i] Nachrichten geschickt")
-    print(anal.analyze_users(max_users))
-
-
     print(anal.get_user_profile_data())
+
+
+def calculate_hitting_set_click():
+    anal = Analytics.Analytics("messages/messages_sim.csv", 
+                               "activities/activity_log.csv",
+                               "activities/mix_status_log.csv", 
+                               "messages/user_profiles.csv")
     
-def calculateHittingSet_click():
-    anal = Analytics.Analytics("messages/messages_sim.csv", "activities/activity_log.csv",
-                               "activities/mix_status_log.csv", "messages/user_profiles.csv")
     param_hs_start = int(e_window_start.get())
     param_hs_end = int(e_window_end.get())
     param_hs_number_msg = int(e_number_messages.get())
+    
     print("Hittingset: --------------")
-    #hittingset = anal.get_hitting_set_from_message_path(param_hs_number_msg, param_hs_start, param_hs_end)
-    hittingsets = anal.getMultipleHittingSets(param_hs_number_msg, param_hs_start, param_hs_end)
+    hittingsets = anal.get_multiple_hitting_sets(param_hs_number_msg, param_hs_start, param_hs_end)
     print("----------------------")
-    label_analytics_hittingset = Label(root, text="") #reset to not see any previous values that exceed the current values regarding horizontal space
+
+    # reset to not see any previous values that exceed the current values regarding horizontal space
+    label_analytics_hittingset = Label(root, text="")
     label_analytics_hittingset.grid(row=210, column=1)
     label_analytics_hittingset = Label(root, text=hittingsets)
     label_analytics_hittingset.grid(row=210, column=1)
@@ -220,7 +222,18 @@ def start_simulation_click():
         user_profile = int(e_user_profile.get())
     if e_dur_simulation.get() != "":
         duration_simulation = int(e_dur_simulation.get())
-    print("Click", param_mu, param_lamda, layer, param_lamda_loop_cover, param_lamda_drop_cover, param_lamda_mix_cover, crypto_delay, nbr_users, user_profile, duration_simulation)
+
+    print("Click",
+          param_mu,
+          param_lamda,
+          layer,
+          param_lamda_loop_cover,
+          param_lamda_drop_cover,
+          param_lamda_mix_cover,
+          crypto_delay,
+          nbr_users,
+          user_profile,
+          duration_simulation)
     
     print('\nSETUP ***************************************************************************************************')
     env = simpy.Environment()
@@ -230,9 +243,12 @@ def start_simulation_click():
 
     iter_mixes = 1
     mixes = []
+    # string operations to get the wanted data formatr
     if isinstance(layer, str):
         layer = layer.replace('[', '').replace(']', '').replace(' ', '')
         layer = layer.split(',')
+
+    # create the needed mix network based on the inputs
     for i in range(len(layer)):
         tmp_layer = []
         for q in range(int(layer[i])):
@@ -263,7 +279,7 @@ def start_simulation_click():
     print(simulation.mix_network.exgress_provider)
     print('Simulation completed')
     SIMLOGGER.mix_status_to_csv(mix_network)
-    get_analytics(nbr_users)
+    get_analytics()
 
 
 def start_standard_simulation_click():
@@ -277,7 +293,18 @@ def start_standard_simulation_click():
     param_mu = st_PARAM_MU  # serving time
     crypto_delay = st_CRYPTO_DELAY
     user_profile = st_USER_PROFILE
-    print("Click", param_mu, param_lamda, layer, param_lamda_loop_cover, param_lamda_drop_cover, param_lamda_mix_cover, crypto_delay, nbr_users, duration_simulation)
+
+    print("Click",
+          param_mu,
+          param_lamda,
+          layer,
+          param_lamda_loop_cover,
+          param_lamda_drop_cover,
+          param_lamda_mix_cover,
+          crypto_delay,
+          nbr_users,
+          duration_simulation)
+
     print('\nSETUP ***************************************************************************************************')
     env = simpy.Environment()
     in_prov = IngressProvider.IngressProvider(env, 'IP1')
@@ -285,6 +312,7 @@ def start_standard_simulation_click():
 
     iter_mixes = 1
     mixes = []
+    # create mix network based on the standard values
     for i in range(len(layer)):
         tmp_layer = []
         for q in range(int(layer[i])):
@@ -316,7 +344,7 @@ def start_standard_simulation_click():
 
     SIMLOGGER.mix_status_to_csv(mix_network)
 
-    get_analytics(nbr_users)
+    get_analytics()
 
 
 # Enter Button =========================================================================================================
@@ -330,7 +358,7 @@ label_space = Label(root, text="")
 label_space.grid(row=21, column=1)
 
 # Hitting Set Analytics Button
-standard_simulation_button = Button(root, text="Calculate Hitting Set", command=calculateHittingSet_click)
+standard_simulation_button = Button(root, text="Calculate Hitting Set", command=calculate_hitting_set_click)
 standard_simulation_button.grid(row=205, column=1)
 
 root.mainloop()
