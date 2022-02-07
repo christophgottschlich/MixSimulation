@@ -14,6 +14,7 @@ from tkinter import *
 
 root = Tk()
 
+# Parameters for standard simulation run
 st_DURATION_SIMULATION = 250000  # Milliseconds
 st_NBR_USERS = 100
 st_LAYER = [3, 3, 3]
@@ -24,7 +25,8 @@ st_PARAM_LAMDA_MIX_COVER = 5
 st_PARAM_MU = 5000
 st_CRYPTO_DELAY = 500
 st_USER_PROFILE = 5
-    
+
+# UI
 # HEADER =======================================================================
 label_titel = Label(root, text="Stop and Go Mix - Simulator")
 label_titel.grid(row=0, column=1)
@@ -144,6 +146,7 @@ def simulate(simulation):
 
 
 def get_analytics():
+    # show message and mix analytics on UI
     anal = Analytics.Analytics("messages/messages_sim.csv", 
                                "activities/activity_log.csv", 
                                "activities/mix_status_log.csv", 
@@ -167,6 +170,7 @@ def get_analytics():
 
 
 def calculate_hitting_set_click():
+    # calculate and show hitting_set_analytics on UI
     anal = Analytics.Analytics("messages/messages_sim.csv", 
                                "activities/activity_log.csv",
                                "activities/mix_status_log.csv", 
@@ -175,10 +179,9 @@ def calculate_hitting_set_click():
     param_hs_start = int(e_window_start.get())
     param_hs_end = int(e_window_end.get())
     param_hs_number_msg = int(e_number_messages.get())
-    
-    print("Hittingset: --------------")
+
     hittingsets = anal.get_multiple_hitting_sets(param_hs_number_msg, param_hs_start, param_hs_end)
-    print("----------------------")
+
 
     # reset to not see any previous values that exceed the current values regarding horizontal space
     label_analytics_hittingset = Label(root, text="")
@@ -188,6 +191,7 @@ def calculate_hitting_set_click():
 
 
 def start_simulation_click():
+    # run personalized simulation
     duration_simulation = st_DURATION_SIMULATION  # Milliseconds
     nbr_users = st_NBR_USERS
     layer = st_LAYER  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
@@ -283,6 +287,7 @@ def start_simulation_click():
 
 
 def start_standard_simulation_click():
+    # run standard simulation
     duration_simulation = st_DURATION_SIMULATION  # Milliseconds
     nbr_users = st_NBR_USERS
     layer = st_LAYER  # LAYER.length = number of layers + LAYER[i] = mix nodes in particular layer
@@ -347,10 +352,9 @@ def start_standard_simulation_click():
     get_analytics()
 
 
-# Enter Button =========================================================================================================
+# Start Simulation Buttons =============================================================================================
 enter_button = Button(root, text="Start Simulation", command=start_simulation_click)
 enter_button.grid(row=20, column=1)
-
 standard_simulation_button = Button(root, text="Start Standard Simulation", command=start_standard_simulation_click)
 standard_simulation_button.grid(row=20, column=2)
 
@@ -362,4 +366,3 @@ standard_simulation_button = Button(root, text="Calculate Hitting Set", command=
 standard_simulation_button.grid(row=205, column=1)
 
 root.mainloop()
-# ======================================================================================================================

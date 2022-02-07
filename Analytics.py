@@ -125,8 +125,8 @@ class Analytics:
         file4.close()
         return action_data
 
-    # returns path of a given message
     def get_path_of_message(self, message_id):
+        # returns path of a given message through the network
         data = self.get_action_data()
         specific_message_log = []
         for i in range(0, len(data)):
@@ -134,8 +134,8 @@ class Analytics:
                 specific_message_log.append(data[i])
         return specific_message_log
 
-    # returns array with all messages involving given user
     def get_messages_from_user(self, user):
+        # returns array with all messages involving given user
         data = self.get_action_data()
         user_log = []
         for i in range(0, len(data)):
@@ -144,6 +144,7 @@ class Analytics:
         return user_log
 
     def get_messages_from_user_at_time(self, user, start_time, end_time):
+        # returns all messages sent from a user during a given time period
         data = self.get_action_data()
         user_log = []
         for i in range(0, len(data)):
@@ -153,8 +154,10 @@ class Analytics:
                 user_log.append(data[i])
         return user_log
 
-    # returns hitting_set of a given message with given time window
     def get_hitting_set_from_message_path(self, message_id, time_window_start, time_window_end):
+        # returns hitting_set of a given message with given time window
+        # the hitting_set consists of messages, which where sent to the egress provider
+        # that from the perspective of the attacker can be the message he wanted to track
         message_path = self.get_path_of_message(message_id)
         hs = []
         hs.clear()
@@ -188,6 +191,9 @@ class Analytics:
         return message_in_hittingset, len(hs)
 
     def get_multiple_hitting_sets(self, number_messages, time_window_start, time_window_end):
+        # get the hitting set analytics of a given number of random chosen messages
+        # the analytics consists of "mean hitting set size"
+        # and the mean of the message actually being in the hitting set
         total_bool_in_hs = 0
         total_size_in_hs = []
         temp = self.get_message_data()
