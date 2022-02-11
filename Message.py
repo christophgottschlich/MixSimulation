@@ -33,7 +33,7 @@ class Message(object):
         for i in range(len(self.delays)):
             tmp += self.delays[i]
             delay_tmp = self.delays[i]
-            # avoid to little delay
+            # avoid too little delay
             if delay_tmp < 5:
                 delay_tmp = 5
 

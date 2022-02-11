@@ -17,3 +17,7 @@ Information for Code-Execution:
     a message, that is monitored, arrives at a mix node. After the arrival every message that is sent by the mix node
     is then saved and gets monitored as well. This procedure is done until every monitored message has arrived at the
     egress provider.
+
+
+Notice:
+    If the screen is too small, the UI-window may exceed the lower edge of the screen, when the analytics are displayed.
